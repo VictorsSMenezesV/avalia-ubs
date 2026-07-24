@@ -1,7 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:meu_app/features/ubs/domain/entites/endereco_entity.dart';
 
 class UbsDetalhesScreen extends StatelessWidget {
   final String ubsId;

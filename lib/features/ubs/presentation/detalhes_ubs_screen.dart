@@ -8,18 +8,17 @@ import "package:meu_app/features/avaliacao/presentation/providers/avaliacao_cont
 import "package:provider/provider.dart";
 import "../../avaliacao/domain/entities/avaliacao_entity.dart";
 
-import "../../avaliacao/presentation/avaliacao_ubs_screen.dart";
 
 class DetalhesUbsScreen extends StatefulWidget {
   final String ubsId;
   final String ubsNome;
 
   const DetalhesUbsScreen({
-    Key? key,
+    super.key,
     required this.ubsId,
     required this.ubsNome,
     bool? isVisitor
-  }) : super(key: key);
+  });
 
   @override
   State<DetalhesUbsScreen> createState() => _DetalhesUbsScreenState();

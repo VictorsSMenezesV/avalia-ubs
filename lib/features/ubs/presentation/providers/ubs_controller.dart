@@ -1,8 +1,5 @@
-// Arquivo: lib/providers/ubs_service.dart
-import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:meu_app/features/auth/domain/usecases/logout_usecase.dart";
-import "package:meu_app/features/auth/domain/usecases/reset_password_usecase.dart";
 import "package:meu_app/features/ubs/domain/usecases/cadastrar_ubs_usecase.dart";
 import "package:meu_app/features/ubs/domain/usecases/ubs_usecase.dart";
 import "../../domain/entites/ubs_entity.dart";

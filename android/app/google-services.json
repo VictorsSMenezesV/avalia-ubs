@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "606903143656",
+    "project_id": "avalia-ubs",
+    "storage_bucket": "avalia-ubs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606903143656:android:eb23665d54a2545b150d5d",
+        "android_client_info": {
+          "package_name": "com.example.avalia_ubs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYwAFZwU6n_Jos0D-rGHOFsVQPpOPVXSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606903143656:android:2bb371851fa0507a150d5d",
+        "android_client_info": {
+          "package_name": "com.example.meu_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYwAFZwU6n_Jos0D-rGHOFsVQPpOPVXSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

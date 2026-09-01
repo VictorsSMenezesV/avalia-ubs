@@ -1,434 +1,113 @@
-# 🏥 Avalia UBS
+# AvaliaUBS
 
-Aplicativo mobile desenvolvido em **Flutter** para avaliação e consulta de **Unidades Básicas de Saúde (UBS)**. O projeto permite que usuários encontrem unidades de saúde, consultem informações e registrem avaliações sobre os serviços prestados.
+Aplicativo mobile para avaliação de Unidades Básicas de Saúde (UBS), desenvolvido em **Flutter** com **Firebase** como backend. Usuários podem se cadastrar ou navegar como visitantes, consultar UBS próximas, avaliar unidades já utilizadas e acompanhar o status de suas próprias avaliações.
 
-O projeto foi desenvolvido com foco em **desenvolvimento mobile, integração com Firebase, persistência de dados, geolocalização e experiência do usuário**.
+> ⚠️ Projeto em desenvolvimento ativo. Este README reflete o estado atual da arquitetura e das funcionalidades implementadas.
 
----
+## Sobre o projeto
 
-## 📱 Sobre o projeto
+O AvaliaUBS conecta dados públicos de Unidades Básicas de Saúde (baseados no CNES/DATASUS) a avaliações reais de usuários, permitindo que a comunidade avalie tempo de espera, lotação, disponibilidade de medicamentos e qualidade do atendimento de cada unidade.
 
-O **Avalia UBS** tem como objetivo facilitar o acesso a informações sobre Unidades Básicas de Saúde e permitir que usuários compartilhem suas experiências com os serviços oferecidos.
+O app **não possui vínculo oficial** com o Ministério da Saúde, secretarias estaduais/municipais ou qualquer órgão público — é uma iniciativa independente que reutiliza dados abertos governamentais.
 
-A aplicação permite consultar UBS cadastradas, visualizar informações da unidade e realizar avaliações relacionadas à qualidade do atendimento.
+## Perfis de acesso
 
-O projeto também foi utilizado como oportunidade para aplicar conceitos de:
+| Perfil | O que pode fazer |
+|---|---|
+| **Visitante** | Consultar UBS e ler avaliações públicas, sem necessidade de cadastro |
+| **Usuário cadastrado** | Tudo do visitante, além de avaliar UBS, favoritar unidades, ver seu histórico de avaliações e editar/excluir/denunciar avaliações |
+| **Administrador** | Painel completo: gerenciar UBS, moderar avaliações (aprovar/rejeitar), gerenciar usuários e revisar denúncias |
 
-* Desenvolvimento mobile com Flutter
-* Gerenciamento de estado
-* Autenticação de usuários
-* Banco de dados NoSQL
-* Integração com serviços do Firebase
-* Geolocalização
-* Consumo e tratamento de dados
-* Arquitetura e organização de código
-* Testes e versionamento com Git
+A definição de administrador é feita via **Custom Claims** do Firebase Authentication — nunca é um valor configurável pelo próprio app.
 
----
+## Principais funcionalidades
 
-## ✨ Funcionalidades
+- Cadastro, login e navegação como visitante (Firebase Authentication)
+- Busca de UBS por nome, com filtragem em tempo real
+- Busca de UBS próximas por geolocalização (GPS do dispositivo ou fallback de cadastro)
+- Avaliação de UBS com nota (1-5), comentário opcional e campos estruturados (tempo de espera, lotação, disponibilidade de medicamento)
+- **Moderação automática por regra de negócio**: avaliações apenas com dados estruturados são publicadas direto; avaliações com comentário livre entram em fila de análise administrativa
+- Histórico pessoal de avaliações, com status visível (publicada / em análise / não aprovada)
+- Edição e exclusão da própria avaliação
+- Denúncia de avaliações de terceiros
+- Favoritar UBS e consultar lista de favoritos
+- Painel administrativo: CRUD de UBS, moderação de avaliações, gestão de usuários
 
-### 👤 Usuários
+## Stack técnica
 
-* Cadastro de usuários
-* Login e autenticação
-* Gerenciamento de informações do usuário
-* Controle de acesso às funcionalidades da aplicação
+- **Flutter** — interface e lógica de app
+- **Firebase Authentication** — autenticação e controle de acesso (Custom Claims)
+- **Cloud Firestore** — banco de dados NoSQL
+- **Firebase Cloud Functions** — operações administrativas privilegiadas (promoção de admin, moderação em lote)
+- **go_router** — navegação declarativa, com rotas nomeadas e guardas de acesso por perfil
+- **Provider** + **get_it** — gerenciamento de estado e injeção de dependência
+- **geolocator** / **geoflutterfire_plus** — geolocalização e busca por proximidade
 
-### 🏥 Unidades de Saúde
+## Arquitetura
 
-* Listagem de UBS
-* Visualização dos dados da unidade
-* Informações de localização
-* Consulta de unidades próximas
-* Visualização da localização utilizando latitude e longitude
+O projeto segue os princípios de **Clean Architecture**, organizado em três camadas independentes:
 
-### ⭐ Avaliações
-
-* Avaliação das unidades de saúde
-* Registro das experiências dos usuários
-* Consulta das avaliações realizadas
-* Organização das informações para facilitar a visualização
-
-### 🔎 Pesquisa
-
-* Pesquisa de unidades por nome
-* Filtros e consultas no banco de dados
-* Tratamento de informações para melhorar a busca
-
-### 🔐 Administração
-
-O projeto também possui funcionalidades administrativas para gerenciamento das informações utilizadas pela aplicação.
-
----
-
-## 🛠️ Tecnologias utilizadas
-
-### Mobile
-
-* **Flutter**
-* **Dart**
-* Material Design
-
-### Gerenciamento de estado
-
-* **Provider**
-
-### Backend / Serviços
-
-* **Firebase Authentication**
-* **Cloud Firestore**
-
-### Banco de dados
-
-* **Cloud Firestore**
-
-### Desenvolvimento
-
-* **Git**
-* **GitHub**
-* **VS Code**
-* Android Studio
-
----
-
-## 🏗️ Arquitetura
-
-O projeto foi estruturado buscando separar responsabilidades entre apresentação, gerenciamento de estado, modelos e acesso aos dados.
-
-Uma estrutura simplificada do projeto:
-
-```text
+```
 lib/
-├── core/
-│   ├── constants/
-│   ├── theme/
-│   └── utils/
-│
-├── models/
-│   ├── ubs_model.dart
-│   └── user_model.dart
-│
-├── entities/
-│   └── ubs_entity.dart
-│
-├── providers/
-│   ├── auth_provider.dart
-│   ├── ubs_provider.dart
-│   └── admin_provider.dart
-│
-├── services/
-│   ├── auth_service.dart
-│   └── firestore_service.dart
-│
-├── screens/
-│   ├── login/
-│   ├── home/
-│   ├── ubs/
-│   ├── evaluation/
-│   └── admin/
-│
-├── widgets/
-│
-└── main.dart
+├── domain/          # Regras de negócio puras — entidades, contratos de repositório e usecases.
+│                     # Não depende de Flutter, Firebase ou qualquer framework externo.
+├── data/             # Implementação concreta — models, datasources (Firebase) e repositories.
+│                     # Traduz entre o formato do Firestore e as entidades do domain.
+├── presentation/     # UI — telas, controllers (ChangeNotifier) e widgets.
+│                     # Consome usecases através de injeção de dependência.
+└── core/             # Código transversal — rotas, injeção de dependência, tema, utilitários.
 ```
 
-> A estrutura pode variar conforme a versão atual do projeto.
+Cada funcionalidade (autenticação, UBS, avaliações, favoritos, denúncias) segue o mesmo fluxo:
 
----
-
-## 🔥 Firebase
-
-O projeto utiliza o Firebase para fornecer recursos de backend.
-
-### Firebase Authentication
-
-Responsável pelo gerenciamento da autenticação dos usuários.
-
-```text
-Usuário
-   │
-   ▼
-Firebase Authentication
-   │
-   ▼
-Aplicação Flutter
+```
+UI → Controller → Usecase → Repository (contrato) → Datasource (Firebase) → Firestore
 ```
 
-### Cloud Firestore
+Princípios SOLID aplicados ao longo do projeto:
+- **SRP**: cada classe tem uma única responsabilidade (busca, cadastro, mapeamento, estado de UI são sempre classes separadas)
+- **DIP**: camadas superiores dependem de abstrações (`Repository`, `Datasource` como interfaces), nunca de implementações concretas do Firebase
+- **OCP**: novas fontes de dado (cache local, outro backend) podem ser adicionadas sem alterar o domain ou a presentation
 
-Utilizado para armazenar informações relacionadas aos usuários, UBS e avaliações.
+## Modelagem de dados (Firestore)
 
-Exemplo simplificado:
+```
+users/{userId}                          → perfil do usuário
+users/{userId}/favoritos/{ubsId}        → UBS favoritadas pelo usuário
 
-```text
-Firestore
-│
-├── users
-│   └── {userId}
-│
-├── ubs
-│   └── {ubsId}
-│
-└── avaliações
-    └── {evaluationId}
+ubs/{ubsId}                             → dados da unidade (nome, endereço, geolocalização, CNES)
+
+avaliacoes/{avaliacaoId}                → avaliações (coleção raiz, sem duplicação),
+                                           filtradas por ubsId, userId ou status conforme a tela
+
+denuncias/{denunciaId}                  → denúncias de avaliações, revisadas pelo admin
+
+config/geral                            → configurações globais do app
+legal/termosDeUso, legal/politicaPrivacidade → textos legais versionados
 ```
 
-As regras de segurança do Firestore são utilizadas para controlar quais operações podem ser realizadas por cada tipo de usuário.
+A segurança dos dados é garantida em duas camadas: validação client-side (para UX) e **Firestore Security Rules** (fonte de verdade real), que impõem as mesmas regras de negócio no servidor — incluindo a obrigatoriedade de moderação para avaliações com comentário.
 
----
+## Regra de moderação de avaliações
 
-## 📍 Geolocalização
+Avaliação nasce com status:
+- **`aprovada`** — quando contém apenas dados estruturados (nota, tempo de espera, lotação, medicamento), sem texto livre
+- **`analise`** — quando inclui comentário escrito pelo usuário, aguardando revisão do administrador
 
-As unidades possuem informações de localização utilizando coordenadas geográficas:
+Essa regra é reforçada tanto no usecase de criação/edição quanto nas Firestore Rules, impedindo que o cliente burle a moderação enviando um comentário já marcado como aprovado.
 
-```text
-Latitude
-Longitude
-```
+## Navegação
 
-Essas informações permitem trabalhar com a localização das UBS e futuramente possibilitam recursos como:
+A navegação usa `go_router` com `ShellRoute`, mantendo Drawer e AppBar persistentes por área do app (usuário/visitante e administrador), com títulos gerados dinamicamente a partir da rota ativa. O acesso a rotas é controlado por um `redirect` centralizado, que reage ao estado de autenticação em tempo real.
 
-* UBS mais próxima
-* Distância entre usuário e unidade
-* Exibição em mapa
-* Rotas até a unidade
+## Status do projeto
 
----
+Em desenvolvimento. Próximas implementações planejadas incluem evolução da tela inicial de busca para um sistema de filtros (categoria, status de funcionamento, nota mínima) e refinamentos no painel administrativo.
 
-## 🚀 Como executar o projeto
+## Aspectos legais
 
-### Pré-requisitos
+O projeto reutiliza dados públicos governamentais (CNES/DATASUS) sob licença de dados abertos, com atribuição de fonte. Antes da publicação em lojas de aplicativos, itens como política de privacidade, termos de uso e conformidade com a LGPD devem ser finalizados — consulte a documentação interna do projeto para o checklist completo.
 
-Antes de executar o projeto, certifique-se de possuir:
+## Licença
 
-* Flutter instalado
-* Dart SDK
-* Android Studio ou outro ambiente compatível
-* Android SDK
-* Git
-* Uma conta/projeto configurado no Firebase
-
-Verifique a instalação do Flutter:
-
-```bash
-flutter doctor
-```
-
----
-
-### 📥 Clonando o projeto
-
-```bash
-git clone https://github.com/VictorsSMenezesV/avalia-ubs.git
-```
-
-Entre na pasta:
-
-```bash
-cd avalia-ubs
-```
-
----
-
-### 📦 Instalando as dependências
-
-Execute:
-
-```bash
-flutter pub get
-```
-
----
-
-### 🔥 Configuração do Firebase
-
-O projeto necessita de uma configuração válida do Firebase.
-
-Caso esteja configurando o projeto em um novo ambiente, utilize o FlutterFire CLI:
-
-```bash
-dart pub global activate flutterfire_cli
-```
-
-Depois:
-
-```bash
-flutterfire configure
-```
-
-Selecione o projeto Firebase e as plataformas desejadas.
-
-> Não versione credenciais ou arquivos contendo informações sensíveis no repositório.
-
----
-
-### ▶️ Executando
-
-Com um dispositivo físico ou emulador conectado:
-
-```bash
-flutter run
-```
-
-Para verificar os dispositivos disponíveis:
-
-```bash
-flutter devices
-```
-
----
-
-## 🧪 Testes
-
-Os testes podem ser executados através de:
-
-```bash
-flutter test
-```
-
-Para executar análise estática:
-
-```bash
-flutter analyze
-```
-
----
-
-## 🔄 CI/CD
-
-O projeto também pode ser integrado a pipelines de **CI/CD utilizando GitHub Actions**.
-
-Um pipeline pode executar automaticamente:
-
-```text
-Push / Pull Request
-        │
-        ▼
-GitHub Actions
-        │
-        ├── flutter pub get
-        │
-        ├── flutter analyze
-        │
-        ├── flutter test
-        │
-        └── Build APK
-```
-
-Essa abordagem permite identificar problemas antes que alterações sejam integradas à branch principal.
-
----
-
-## 📸 Screenshots
-
-> Adicione aqui screenshots da aplicação para apresentar visualmente o projeto.
-
-Exemplo:
-
-```text
-docs/
-├── login.png
-├── home.png
-├── ubs_details.png
-├── evaluation.png
-└── profile.png
-```
-
-Depois, as imagens podem ser adicionadas ao README:
-
-```markdown
-![Tela inicial](docs/home.png)
-```
-
----
-
-## 🎯 Objetivos do projeto
-
-O projeto foi desenvolvido para colocar em prática conhecimentos de desenvolvimento de aplicações mobile e integração com serviços backend.
-
-Entre os principais objetivos estão:
-
-* Desenvolver uma aplicação Flutter completa
-* Trabalhar com arquitetura e separação de responsabilidades
-* Implementar autenticação
-* Trabalhar com banco de dados NoSQL
-* Integrar o Flutter com Firebase
-* Trabalhar com geolocalização
-* Implementar gerenciamento de estado
-* Aplicar boas práticas de desenvolvimento
-* Utilizar Git e GitHub para versionamento
-
----
-
-## 📚 Principais conhecimentos aplicados
-
-Durante o desenvolvimento foram utilizados conceitos de:
-
-**Flutter**
-
-* Widgets
-* Navegação
-* Formulários
-* Gerenciamento de estado
-* Responsividade
-* Ciclo de vida
-* Integração com plugins
-
-**Firebase**
-
-* Authentication
-* Cloud Firestore
-* Regras de segurança
-* Consultas e filtros
-* Estruturação de coleções
-
-**Desenvolvimento**
-
-* Clean Code
-* Separação de responsabilidades
-* Modelos e entidades
-* Tratamento de erros
-* Debugging
-* Versionamento com Git
-* CI/CD
-
----
-
-## 🔮 Próximas melhorias
-
-Algumas funcionalidades que podem ser adicionadas ao projeto:
-
-* [ ] Integração com mapas
-* [ ] Cálculo de distância até a UBS
-* [ ] Rotas utilizando localização do usuário
-* [ ] Sistema de notificações
-* [ ] Melhorias no sistema de avaliações
-* [ ] Dashboard administrativo
-* [ ] Testes unitários
-* [ ] Testes de integração
-* [ ] Testes automatizados de UI
-* [ ] Melhorias de acessibilidade
-* [ ] Pipeline completo de CI/CD
-
----
-
-## 👨‍💻 Desenvolvedor
-
-**Victor Souza Menezes Vicente**
-
-Desenvolvedor com foco em **Flutter, Java, APIs REST, Docker, Linux e desenvolvimento Full Stack**.
-
-### Tecnologias
-
-```text
-Flutter • Dart • Java • JavaScript • SQL
-Firebase • REST APIs • Docker • Linux
-Git • GitHub • MySQL • PostgreSQL • SQLite
-```
-
----
-
-## 📄 Licença
-
-Este projeto foi desenvolvido para fins de **estudo, portfólio e demonstração de conhecimentos técnicos**.
+*(defina aqui a licença do repositório, caso ainda não tenha escolhido uma — ex: MIT, Apache 2.0)*

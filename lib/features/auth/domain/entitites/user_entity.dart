@@ -1,4 +1,3 @@
-// Arquivo: lib/models/user_model.dart
 enum UserRole { admin, user, guest }
 
 class UserEntity {

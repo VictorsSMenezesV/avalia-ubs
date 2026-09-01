@@ -13,7 +13,7 @@ class CriarDenunciaUseCase {
     String? descricao,
   }) {
     final denuncia = DenunciaEntity(
-      id: '', // montado no datasource, a partir de avaliacaoId + userIdDenunciante
+      id: '', 
       avaliacaoId: avaliacaoId,
       ubsId: ubsId,
       userIdDenunciante: userIdDenunciante,

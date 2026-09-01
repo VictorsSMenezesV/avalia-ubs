@@ -1,5 +1,3 @@
-// domain/entities/denuncia_entity.dart
-
 enum MotivoDenuncia { conteudoOfensivo, spam, informacaoFalsa, outro }
 
 class DenunciaEntity {

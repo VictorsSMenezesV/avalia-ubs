@@ -1,5 +1,3 @@
-// data/repositories/favorito_repository_impl.dart
-
 import 'package:meu_app/features/ubs/data/datasource/favorito_firestore_datasource.dart';
 import 'package:meu_app/features/ubs/domain/entites/favorito_entity.dart';
 import 'package:meu_app/features/ubs/domain/repositories/favorito_repository.dart';

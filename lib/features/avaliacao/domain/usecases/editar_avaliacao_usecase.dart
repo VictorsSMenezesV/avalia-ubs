@@ -20,7 +20,7 @@ class EditarAvaliacaoUsecase {
 
     final comentarioLimpo = comentario?.trim();
     final temComentario = comentarioLimpo != null && comentarioLimpo.isNotEmpty;
-    // Mesma regra do CriarAvaliacaoUsecase — editar não escapa da moderação
+
     final status = temComentario ? StatusAvaliacao.analise : StatusAvaliacao.aprovada;
 
     final avaliacao = AvaliacaoEntity(

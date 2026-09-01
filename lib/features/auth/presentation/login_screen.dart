@@ -1,5 +1,3 @@
-// presentation/auth/screens/login_screen.dart
-
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 import "package:meu_app/features/auth/presentation/providers/auth_controller.dart";
@@ -45,8 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
 }
   void _continueAsVisitor() {
     context.read<AuthController>().entrarComoVisitante();
-    // Mesmo princípio: entrarComoVisitante() chama notifyListeners(),
-    // o redirect reage sozinho — não precisa navegar manualmente aqui também
   }
 
   @override
@@ -59,9 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
-
-    // Cobre o estado inicial, enquanto o AuthController ainda está checando
-    // se já existe uma sessão ativa (substitui o antigo AuthWrapper nesse ponto)
     if (auth.isLoading) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }

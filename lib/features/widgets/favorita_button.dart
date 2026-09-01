@@ -1,5 +1,3 @@
-// presentation/ubs/widgets/favorito_button.dart
-
 import 'package:flutter/material.dart';
 import 'package:meu_app/features/auth/presentation/providers/auth_controller.dart';
 import 'package:meu_app/features/ubs/presentation/providers/favorito_controller.dart';
@@ -13,8 +11,6 @@ class FavoritoButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthController>();
 
-    // Visitante não favorita — nem exibe o botão, evitando um clique
-    // que resultaria em erro por falta de userId
     if (!auth.isLoggedUser || auth.currentUser == null) return const SizedBox.shrink();
 
     final userId = auth.currentUser!.uid;

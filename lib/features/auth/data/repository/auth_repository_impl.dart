@@ -71,8 +71,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Map<String, dynamic>?> getUserProfile() async {
-    final uid = _datasource.authStateChanges; // ver nota abaixo
-    return null; // ajustado no usecase, que já tem o uid do usuário atual em mãos
+    final uid = _datasource.authStateChanges;
+    return null; 
   }
  
   

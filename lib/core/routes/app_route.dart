@@ -13,6 +13,7 @@ import 'package:meu_app/features/avaliacao/presentation/historico_avaliacoes_scr
 import 'package:meu_app/features/admin/presentation/admin_home.screen.dart';
 import 'package:meu_app/features/ubs/presentation/favoritos_screen.dart';
 import 'package:meu_app/features/ubs/presentation/pesquisa_ubs.dart';
+import 'package:meu_app/features/ubs/presentation/ubs_proximas_scree.dart';
 import 'package:meu_app/features/widgets/admin_scaffold.dart';
 import 'package:meu_app/features/widgets/user_area_scaffold.dart';
 import 'package:meu_app/features/ubs/presentation/insercao_ubs_screen.dart';
@@ -26,9 +27,7 @@ class AppRouter {
     refreshListenable: authController,
     redirect: _guardarRotas,
     routes: [
-      // ---------------------------------------------------------------
-      // FORA DE QUALQUER SHELL — telas de tarefa única, com botão de voltar
-      // ---------------------------------------------------------------
+
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
         path: '/signup',
@@ -48,13 +47,14 @@ class AppRouter {
           );
         },
       ),
+
+      
       GoRoute(
   path: '/ubs/:ubsId/avaliar',
   builder: (c, s) {
     final extra = s.extra;
     final ubsId = s.pathParameters['ubsId']!;
 
-    // Vem como Map quando é edição (HistoricoAvaliacoesScreen manda ubsNome + avaliacao)
     if (extra is Map) {
       return InserirAvaliacaoScreen(
         ubsId: ubsId,
@@ -63,7 +63,7 @@ class AppRouter {
       );
     }
 
-    // Vem como String quando é criação (AvaliacoesUbsScreen manda só o nome)
+    
     return InserirAvaliacaoScreen(
       ubsId: ubsId,
       ubsNome: extra as String? ?? '',
@@ -75,9 +75,6 @@ class AppRouter {
         builder: (context, state) => const InsercaoUbsScreen(),
       ),
 
-      // ---------------------------------------------------------------
-      // SHELL 1 — Área do usuário (visitante + cadastrado), Drawer persistente
-      // ---------------------------------------------------------------
       ShellRoute(
         builder: (context, state, child) => UserAreaScaffold(body: child),
         routes: [
@@ -90,12 +87,13 @@ class AppRouter {
             path: '/favoritos',
             builder: (context, state) => const FavoritosScreen(),
           ),
+           GoRoute(
+            path: '/ubs-proximas',
+            builder: (context, state) => const UnidadesProximasScreen(),
+          ),
         ],
       ),
 
-      // ---------------------------------------------------------------
-      // SHELL 2 — Área do Admin, Drawer persistente
-      // ---------------------------------------------------------------
       ShellRoute(
         builder: (context, state, child) => AdminScaffold(body: child),
         routes: [
@@ -139,7 +137,6 @@ class AppRouter {
       "Redirect avaliando: loc=${state.matchedLocation}, isLoading=${authController.isLoading}, isAdmin=${authController.isAdmin}",
     );
 
-    // Sem sessão nenhuma → só pode estar nas rotas de autenticação
     if (!estaLogadoOuVisitante) {
       return isRotaAuth ? null : '/login';
     }
@@ -147,7 +144,6 @@ class AppRouter {
       "Redirect avaliando: loc=${state.matchedLocation}, isLoading=${authController.isLoading}, isAdmin=${authController.isAdmin}",
     );
 
-    // Já tem sessão, mas está tentando ver login/signup/reset → manda pra home certa
     if (isRotaAuth) {
       return authController.isAdmin ? '/admin' : '/';
     }
@@ -157,12 +153,10 @@ class AppRouter {
 
     final isRotaAdmin = loc.startsWith('/admin');
 
-    // Rota admin sem ser admin → bloqueia
     if (isRotaAdmin && !authController.isAdmin) {
       return '/';
     }
 
-    // Histórico é exclusivo de usuário cadastrado — visitante não acessa
     if (loc == '/historico-avaliacoes' && authController.isVisitor) {
       return '/';
     }

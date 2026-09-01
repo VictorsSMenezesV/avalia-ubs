@@ -16,7 +16,6 @@ class AuthFirebaseDatasource implements AuthRemoteDatasource {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
 
-  // Injeção de dependência — facilita testar com instâncias fake
   AuthFirebaseDatasource({FirebaseAuth? firebaseAuth, FirebaseFirestore? firestore})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _firestore = firestore ?? FirebaseFirestore.instance;

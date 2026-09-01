@@ -37,7 +37,8 @@ class _AvaliacoesUbsScreenState extends State<AvaliacoesUbsScreen> {
     final auth = context
         .watch<
           AuthController
-        >(); // pode notificar à vontade, não afeta o stream
+        >(); 
+        
 
     return Scaffold(
       appBar: AppBar(

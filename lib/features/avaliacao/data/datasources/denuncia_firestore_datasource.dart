@@ -12,7 +12,8 @@ class DenunciaFirestoreDatasource implements DenunciaRemoteDatasource {
 
   @override
   Future<void> criarDenuncia(DenunciaModel denuncia) {
-    // ID determinístico: uma denúncia por (avaliação, usuário) — reenviar sobrescreve, não duplica
+
+
     final id = '${denuncia.avaliacaoId}_${denuncia.userIdDenunciante}';
     return _firestore.collection('denuncias').doc(id).set(denuncia.toFirestoreMap());
   }

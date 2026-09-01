@@ -1,5 +1,3 @@
-// presentation/admin/widgets/admin_scaffold.dart
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meu_app/features/auth/presentation/providers/auth_controller.dart';
@@ -56,7 +54,7 @@ class _AdminDrawer extends StatelessWidget {
             title: const Text("Cadastrar UBS"),
             onTap: () {
               Navigator.pop(context);
-              context.push('/admin/ubs/novo'); // push: formulário, volta com back
+              context.push('/admin/ubs/novo');
             },
           ),
           ListTile(

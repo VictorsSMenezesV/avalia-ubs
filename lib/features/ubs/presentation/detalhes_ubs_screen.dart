@@ -1,7 +1,3 @@
-// Arquivo: lib/screens/detalhes_ubs_screen.dart
-// Atualizado para usar AvaliacaoService e AvaliacaoModel
-
-
 import "package:flutter/material.dart";
 import "package:meu_app/features/avaliacao/presentation/historico_avaliacoes_screen.dart";
 import "package:meu_app/features/avaliacao/presentation/providers/avaliacao_controller.dart";
@@ -25,7 +21,6 @@ class DetalhesUbsScreen extends StatefulWidget {
 }
 
 class _DetalhesUbsScreenState extends State<DetalhesUbsScreen> {
-  // O Stream agora virá do AvaliacaoService
 
   @override
   Widget build(BuildContext context) {
@@ -85,10 +80,9 @@ class _DetalhesUbsScreenState extends State<DetalhesUbsScreen> {
                   itemCount: avaliacoesList.length,
                   itemBuilder: (context, index) {
                     final avaliacao =
-                        avaliacoesList[index]; // Agora é um AvaliacaoModel
+                        avaliacoesList[index]; 
 
                     String dataAvaliacao = "Data não disponível";
-                    // O timestamp já é um Timestamp do Firestore no AvaliacaoModel
                     final dateTime = avaliacao.criadaEm;
                     dataAvaliacao =
                         "${dateTime.day}/${dateTime.month}/${dateTime.year}";
@@ -123,7 +117,7 @@ class _DetalhesUbsScreenState extends State<DetalhesUbsScreen> {
                         ),
                         subtitle: Text(
                           "Avaliado em: $dataAvaliacao por Usuário ID: ${avaliacao.userId.substring(0, 5)}...",
-                        ), // Exemplo de como mostrar parte do ID
+                        ), 
                       ),
                     );
                   },

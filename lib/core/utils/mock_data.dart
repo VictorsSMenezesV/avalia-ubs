@@ -1,12 +1,6 @@
-
-// Arquivo: lib/utils/mock_data.dart
-
-// Usuário Mockado
 const String mockUserId = "prototipoUser001";
 const String mockUserName = "Usuário de Teste";
 
-// Dados Mockados das UBS
-// Em um aplicativo real, isso viria de um banco de dados ou API.
 final List<Map<String, dynamic>> ubsMockData = [
   {
     "id": "ubs001",

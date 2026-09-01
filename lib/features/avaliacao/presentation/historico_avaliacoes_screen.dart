@@ -1,5 +1,3 @@
-// presentation/avaliacao/screens/historico_avaliacoes_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meu_app/features/auth/presentation/providers/auth_controller.dart';
@@ -21,8 +19,6 @@ class _HistoricoAvaliacoesScreenState extends State<HistoricoAvaliacoesScreen> {
   @override
   void initState() {
     super.initState();
-    // Criado uma única vez — mesmo cuidado da AvaliacoesUbsScreen,
-    // pra não recriar o Stream a cada rebuild causado por outros Providers
     final userId = context.read<AuthController>().currentUser!.uid;
     _minhasAvaliacoesStream = context
         .read<AvaliacaoController>()
@@ -54,8 +50,6 @@ class _HistoricoAvaliacoesScreenState extends State<HistoricoAvaliacoesScreen> {
 }
   @override
   Widget build(BuildContext context) {
-    // Sem Scaffold/AppBar próprios — essa tela vive dentro do UserAreaScaffold (ShellRoute),
-    // igual PesquisaUbsScreen e FavoritosScreen
     return StreamBuilder<List<AvaliacaoEntity>>(
       stream: _minhasAvaliacoesStream,
       builder: (context, snapshot) {

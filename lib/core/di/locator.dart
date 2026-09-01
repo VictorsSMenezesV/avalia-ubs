@@ -11,6 +11,8 @@ import 'package:meu_app/features/avaliacao/domain/usecases/editar_avaliacao_usec
 import 'package:meu_app/features/avaliacao/domain/usecases/excluir_avalicao_usecase.dart';
 import 'package:meu_app/features/ubs/data/datasource/favorito_firestore_datasource.dart';
 import 'package:meu_app/features/ubs/data/datasource/favorito_firestore_datasource_impl.dart';
+import 'package:meu_app/features/ubs/data/datasource/loc_mock.dart';
+import 'package:meu_app/features/ubs/data/datasource/localizacao_datasource.dart';
 import 'package:meu_app/features/ubs/data/datasource/ubs_remote_datasource.dart';
 import 'package:meu_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:meu_app/features/avaliacao/data/respositories/avaliacao_repository_impl.dart';
@@ -31,8 +33,10 @@ import 'package:meu_app/features/avaliacao/domain/usecases/buscar_minhas_avaliac
 import 'package:meu_app/features/avaliacao/domain/usecases/criar_avaliacao_usecase.dart';
 import 'package:meu_app/features/ubs/domain/usecases/buscar_favoritos_usecase.dart';
 import 'package:meu_app/features/ubs/domain/usecases/buscar_ubs_paginado_usecase.dart';
+import 'package:meu_app/features/ubs/domain/usecases/buscar_ubs_proxima_usecase.dart';
 import 'package:meu_app/features/ubs/domain/usecases/cadastrar_ubs_usecase.dart';
 import 'package:meu_app/features/ubs/domain/usecases/observar_is_favorito_usecase.dart';
+import 'package:meu_app/features/ubs/domain/usecases/obter_localizacao_atual_usecase.dart';
 import 'package:meu_app/features/ubs/domain/usecases/toggle_favorito_usecase.dart';
 import 'package:meu_app/features/ubs/domain/usecases/ubs_usecase.dart';
 import 'package:meu_app/features/admin/presentation/providers/admin_provider.dart';
@@ -41,12 +45,13 @@ import 'package:meu_app/features/avaliacao/presentation/providers/avaliacao_cont
 import 'package:meu_app/features/ubs/presentation/providers/favorito_controller.dart';
 import 'package:meu_app/features/ubs/presentation/providers/ubs_controller.dart';
 import 'package:meu_app/features/ubs/presentation/providers/ubs_lista_paginada_controller.dart';
+import 'package:meu_app/features/ubs/presentation/providers/ubs_proxima_controller.dart';
 
 final GetIt locator = GetIt.instance;
 
 Future<void> setupLocator() async {
   // ---------------------------------------------------------------
-  // NÍVEL 0 — instâncias brutas do Firebase
+  // instâncias brutas do Firebase
   // ---------------------------------------------------------------
   locator.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   locator.registerLazySingleton<FirebaseFirestore>(
@@ -54,7 +59,7 @@ Future<void> setupLocator() async {
   );
 
   // ---------------------------------------------------------------
-  // NÍVEL 1 — datasources
+  // datasources
   // ---------------------------------------------------------------
   locator.registerLazySingleton<AuthRemoteDatasource>(
     () => AuthFirebaseDatasource(
@@ -76,7 +81,7 @@ Future<void> setupLocator() async {
   );
 
   // ---------------------------------------------------------------
-  // NÍVEL 2 — repositories
+  // repositories
   // ---------------------------------------------------------------
   locator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(locator<AuthRemoteDatasource>()),
@@ -95,7 +100,7 @@ Future<void> setupLocator() async {
   );
 
   // ---------------------------------------------------------------
-  // NÍVEL 3 — usecases
+  // usecases
   // ---------------------------------------------------------------
   locator.registerLazySingleton(() => LoginUsecase(locator<AuthRepository>()));
   locator.registerLazySingleton(() => SignupUsecase(locator<AuthRepository>()));
@@ -146,9 +151,28 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(
     () => ExcluirAvaliacaoUsecase(locator<AvaliacaoRepository>()),
   );
+  
+
+const bool usarLocalizacaoMockada = bool.fromEnvironment('MOCK_LOCATION', defaultValue: false);
+
+locator.registerLazySingleton<LocalizacaoDatasource>(() {
+  if (usarLocalizacaoMockada) {
+    return const LocalizacaoMockDatasource(
+      latitude: -23.672651777766024, 
+      longitude: -46.619268666362785,
+    );
+  }
+  return LocalizacaoGeolocatorDatasource();
+});
+
+locator.registerFactory(() => ObterLocalizacaoAtualUsecase(locator<LocalizacaoDatasource>()));
+  locator.registerLazySingleton(
+    () => BuscarUbsProximasUsecase(locator<UbsRepository>()),
+  );
+  
 
   // ---------------------------------------------------------------
-  // NÍVEL 4 — controllers (ChangeNotifier)
+  // controllers (ChangeNotifier)
   // ---------------------------------------------------------------
   locator.registerLazySingleton(
     () => AuthController(
@@ -183,6 +207,12 @@ Future<void> setupLocator() async {
      locator(),
      locator(),
      locator(),
+    ),
+  );
+   locator.registerLazySingleton(
+    () => UbsProximasController(
+     locator<ObterLocalizacaoAtualUsecase>(),
+     locator<BuscarUbsProximasUsecase>(), 
     ),
   );
   locator.registerLazySingleton(() => AdminController());

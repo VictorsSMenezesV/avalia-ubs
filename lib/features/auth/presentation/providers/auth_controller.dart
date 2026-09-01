@@ -1,5 +1,3 @@
-// Arquivo: lib/auth/providers/auth_provider.dart
-
 import "dart:async";
 
 
@@ -62,7 +60,7 @@ class AuthController with ChangeNotifier {
   }
 
   Future<void> entrarComoVisitante() async {
-    await _logoutUsecase.executar(); // garante que não há sessão Firebase ativa
+    await _logoutUsecase.executar(); 
     _currentUser = null;
     _isVisitor = true;
     _isLoading = false;
@@ -72,7 +70,6 @@ class AuthController with ChangeNotifier {
   Future<void> signOut() async {
     await _logoutUsecase.executar();
     _isVisitor = false;
-    // _currentUser vira null pelo próprio listener de authStateChanges
   }
 
   Future<String?> sendPasswordResetEmail(String email) {

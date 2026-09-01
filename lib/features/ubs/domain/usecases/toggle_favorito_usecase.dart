@@ -10,8 +10,7 @@ class ToggleFavoritoUsecase {
     required String ubsNome,
     required bool jaEhFavorito,
   }) {
-    // Regra de negócio: decide favoritar ou desfavoritar com base no estado atual —
-    // o usecase é quem decide isso, não a tela
+    
     if (jaEhFavorito) {
       return _repository.desfavoritar(userId: userId, ubsId: ubsId);
     }

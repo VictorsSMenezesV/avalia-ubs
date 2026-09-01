@@ -1,8 +1,6 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/ubs_model.dart';
 
-abstract class UbsFirestoreDataSource  {
+abstract class UbsFirestoreDataSource {
   Stream<List<UbsModel>> streamUbs({String searchTerm});
   Future<void> addUbs(UbsModel ubs);
   Future<List<UbsModel>> buscarUbsPaginado({
@@ -10,5 +8,6 @@ abstract class UbsFirestoreDataSource  {
     String? cursor,
     String searchTerm = '',
   });
-}
 
+  Future<List<UbsModel>> buscarTodasComLocalizacao();
+}

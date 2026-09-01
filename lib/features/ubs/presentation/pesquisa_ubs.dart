@@ -1,5 +1,3 @@
-// presentation/ubs/screens/ubs_list_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meu_app/features/ubs/presentation/providers/ubs_lista_paginada_controller.dart';
@@ -23,7 +21,6 @@ class _UbsListScreenState extends State<UbsListScreen> {
   }
 
   void _aoRolar() {
-    // Dispara quando falta menos de 200px pra chegar ao fim da lista
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
       context.read<UbsListaPaginadaController>().carregarProximaPagina();

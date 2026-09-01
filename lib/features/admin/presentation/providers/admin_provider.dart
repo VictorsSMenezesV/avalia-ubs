@@ -11,15 +11,12 @@ class AdminController with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  // ---------- UBS ----------
 
   Stream<QuerySnapshot<Map<String, dynamic>>> streamUbs() {
     return _firestore.collection('ubs').orderBy('nome').snapshots();
   }
 
-  // ---------- AVALIAÇÕES (agora por UBS específica) ----------
 
-  // Recebe o ubsId e busca só as avaliações daquele documento
   Stream<QuerySnapshot<Map<String, dynamic>>> streamAvaliacoesPorUbs(String ubsId) {
     return _firestore
         .collection('ubs')
@@ -76,7 +73,6 @@ class AdminController with ChangeNotifier {
     }
   }
 
-  // ---------- USUÁRIOS (sem alteração) ----------
 
   Stream<QuerySnapshot<Map<String, dynamic>>> streamUsuarios() {
     return _firestore.collection('users').orderBy('createdAt', descending: true).snapshots();

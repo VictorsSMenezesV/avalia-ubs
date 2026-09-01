@@ -20,39 +20,41 @@ class UbsModel extends UbsEntity {
     required super.id, 
     required this.nomeNormalizado,
   });
-  factory UbsModel.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    final geoPoint = data['localizacao'] as GeoPoint;
-    final enderecoMap = data['endereco'] as Map<String, dynamic>;
+  // data/models/ubs_model.dart
 
-    return UbsModel(
-      id:doc.id,
-      cnes: data['cnes'],
-      criadoEm: (data['criadoEm'] as Timestamp).toDate(),
-      crs: data['crs'],
-      distritoAdministrativo: data['distritoAdministrativo'],
-      endereco: EnderecoEntity(
-        bairro: enderecoMap['bairro'],
-        cep: enderecoMap['cep'],
-        completo: enderecoMap['completo'],
-        logradouro: enderecoMap['logradouro'],
-        numero: enderecoMap['numero'],
-      ),
-      latitude: geoPoint.latitude,
-      longitude: geoPoint.longitude,
-      localizacaoPrecisao: data['localizacaoPrecisao'],
-      nome: data['nome'],
-      sts: data['sts'], 
-      nomeNormalizado: data['nome_normalizado'] as String? ?? normalizarBusca(data['nome'] as String? ?? ''),
+factory UbsModel.fromFirestore(DocumentSnapshot doc) {
+  final data = doc.data() as Map<String, dynamic>;
+  final geoPoint = data['localizacao'] as GeoPoint?;
+  final enderecoMap = data['endereco'] as Map<String, dynamic>?;
 
-    );
-  }
+  return UbsModel(
+    id: doc.id,
+    nome: data['nome'] as String? ?? '',
+    endereco: enderecoMap != null
+        ? EnderecoEntity(
+            bairro: enderecoMap['bairro'],
+            cep: enderecoMap['cep'],
+            completo: enderecoMap['completo'],
+            logradouro: enderecoMap['logradouro'],
+            numero: enderecoMap['numero'],
+          )
+        : const EnderecoEntity(bairro: '', cep: '', completo: '', logradouro: '', numero: ''),
+    latitude: geoPoint?.latitude,
+    longitude: geoPoint?.longitude,
+    localizacaoPrecisao: data['localizacaoPrecisao'] as String?,
+    cnes: data['cnes'] as String?,
+    crs: data['crs'] as String?,
+    sts: data['sts'] as String?,
+    distritoAdministrativo: data['distritoAdministrativo'] as String?,
+    criadoEm: (data['criadoEm'] as Timestamp?)?.toDate(), nomeNormalizado: '',
+  );
+}
 
   // Método para converter um UbsModel em um Map para salvar no Firestore
   Map<String, dynamic> toFirestore() {
      return {
       "cnes": cnes,
-      "criadoEm": Timestamp.fromDate(criadoEm),
+      "criadoEm": Timestamp.fromDate(criadoEm!),
       "crs": crs,
       "distritoAdministrativo": distritoAdministrativo,
       'nome_normalizado': normalizarBusca(nome),
@@ -63,7 +65,7 @@ class UbsModel extends UbsEntity {
         "logradouro": endereco.logradouro,
         "numero": endereco.numero,
       },
-      "localizacao": GeoPoint(latitude, longitude),
+      "localizacao": GeoPoint(latitude!, longitude!),
       "localizacaoPrecisao": localizacaoPrecisao,
       "nome": nome,
       "sts": sts,

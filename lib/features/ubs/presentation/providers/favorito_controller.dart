@@ -1,5 +1,3 @@
-// presentation/favoritos/controllers/favorito_controller.dart
-
 import 'package:flutter/material.dart';
 import 'package:meu_app/features/ubs/domain/entites/favorito_entity.dart';
 import 'package:meu_app/features/ubs/domain/usecases/buscar_favoritos_usecase.dart';

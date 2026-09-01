@@ -2,28 +2,47 @@ import 'package:meu_app/features/ubs/domain/entites/endereco_entity.dart';
 
 class UbsEntity {
   final String id;
-  final String cnes;
-  final DateTime criadoEm;
-  final String crs;
-  final String distritoAdministrativo;
-  final EnderecoEntity endereco;
-  final double latitude;
-  final double longitude;
-  final String localizacaoPrecisao;
   final String nome;
-  final String sts;
+  final EnderecoEntity endereco;
+  final double? latitude;
+  final double? longitude;
+  final String? localizacaoPrecisao;
+  final String? cnes;
+  final String? crs;
+  final String? sts;
+  final String? distritoAdministrativo;
+  final DateTime? criadoEm;
+  final double? distanciaKm; 
 
   const UbsEntity({
-    required this.cnes,
-    required this.criadoEm,
-    required this.crs,
-    required this.distritoAdministrativo,
-    required this.endereco,
-    required this.latitude,
-    required this.longitude,
-    required this.localizacaoPrecisao,
+    required this.id,
     required this.nome,
-    required this.sts, required this.id,
+    required this.endereco,
+    this.latitude,
+    this.longitude,
+    this.localizacaoPrecisao,
+    this.cnes,
+    this.crs,
+    this.sts,
+    this.distritoAdministrativo,
+    this.criadoEm,
+    this.distanciaKm,
   });
-}
 
+  UbsEntity copyWith({double? distanciaKm}) {
+    return UbsEntity(
+      id: id,
+      nome: nome,
+      endereco: endereco,
+      latitude: latitude,
+      longitude: longitude,
+      localizacaoPrecisao: localizacaoPrecisao,
+      cnes: cnes,
+      crs: crs,
+      sts: sts,
+      distritoAdministrativo: distritoAdministrativo,
+      criadoEm: criadoEm,
+      distanciaKm: distanciaKm ?? this.distanciaKm,
+    );
+  }
+}

@@ -9,4 +9,6 @@ abstract class UbsRepository {
     String? cursor,
     String searchTerm = '',
   });
+
+Future<List<UbsEntity>> buscarTodasComLocalizacao();    
 }

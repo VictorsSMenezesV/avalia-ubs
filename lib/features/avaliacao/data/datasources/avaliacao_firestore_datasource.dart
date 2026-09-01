@@ -40,7 +40,6 @@ class AvaliacaoFirestoreDatasource implements AvaliacaoRemoteDatasource {
   @override
   Future<void> criarAvaliacao(AvaliacaoModel avaliacao) async {
     await _firestore.collection(_colecao).add(avaliacao.toFirestoreMap());
-    // Uma única escrita — sem duplicação em subcoleção nenhuma
   }
 
   @override

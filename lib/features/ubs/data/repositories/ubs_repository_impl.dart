@@ -11,9 +11,7 @@ class UbsRepositoryImpl implements UbsRepository {
 
   @override
   Stream<List<UbsEntity>> streamUbs({String searchTerm = ''}) {
-    return  [] as Stream<List<UbsEntity>>;//_datasource.streamUbs(searchTerm: searchTerm);
-    // UbsModel extends UbsEntity, então a lista já é compatível --
-    // não precisa de mapeamento extra aqui
+    return  [] as Stream<List<UbsEntity>>;
   }
 
   @override
@@ -54,8 +52,13 @@ Future<PaginaUbs> buscarUbsPaginado({
 
    return PaginaUbs(
     itens: docs,
-    proximoCursor: docs.isNotEmpty ? docs.last.nome : null, // 'nome', não nomeNormalizado
+    proximoCursor: docs.isNotEmpty ? docs.last.nome : null, 
     temMais: docs.length == limite,
   );
   }
+
+  @override
+Future<List<UbsEntity>> buscarTodasComLocalizacao() {
+  return _datasource.buscarTodasComLocalizacao();
+} 
 }

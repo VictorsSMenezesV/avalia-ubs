@@ -8,6 +8,7 @@ import 'package:meu_app/features/avaliacao/presentation/providers/avaliacao_cont
 import 'package:meu_app/features/ubs/presentation/providers/favorito_controller.dart';
 import 'package:meu_app/features/ubs/presentation/providers/ubs_controller.dart';
 import 'package:meu_app/features/ubs/presentation/providers/ubs_lista_paginada_controller.dart';
+import 'package:meu_app/features/ubs/presentation/providers/ubs_proxima_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';
@@ -29,9 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // .value: NÃO cria uma instância nova — reaproveita o singleton do get_it.
-        // Isso é o que faz a UI continuar reconstruindo via notifyListeners(),
-        // já que o Provider ainda está "de olho" nessa instância específica
+
         ChangeNotifierProvider<AuthController>.value(
           value: locator<AuthController>(),
         ),
@@ -49,6 +48,9 @@ class MyApp extends StatelessWidget {
         ), // <- faltava
         ChangeNotifierProvider<FavoritoController>.value(
           value: locator<FavoritoController>(),
+        ),
+        ChangeNotifierProvider<UbsProximasController>.value(
+          value: locator<UbsProximasController>(),
         ),
       ],
       child: const AppComRouter(),

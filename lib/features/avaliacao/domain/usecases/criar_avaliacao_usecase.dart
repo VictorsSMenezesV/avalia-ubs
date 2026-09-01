@@ -22,13 +22,10 @@ class CriarAvaliacaoUsecase {
     final comentarioLimpo = comentario?.trim();
     final temComentario = comentarioLimpo != null && comentarioLimpo.isNotEmpty;
 
-    // Regra de negócio: comentário livre exige revisão humana (pode conter
-    // ofensa, informação falsa, spam). Nota + seleções estruturadas (sem texto
-    // livre) são consideradas seguras o suficiente pra publicação automática.
     final status = temComentario ? StatusAvaliacao.analise : StatusAvaliacao.aprovada;
 
     final avaliacao = AvaliacaoEntity(
-      id: '', // gerado no datasource
+      id: '', 
       ubsId: ubsId,
       ubsNome: ubsNome,
       userId: userId,

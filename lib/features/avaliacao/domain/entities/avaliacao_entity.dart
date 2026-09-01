@@ -8,7 +8,7 @@ enum Lotacao { vazio, moderado, cheio, lotado }
   final String ubsId;
   final String ubsNome;
   final String userId;
-  final int nota; // 1 a 5
+  final int nota; 
   final String? comentario;
   final bool? teveMedicamentoDisponivel;
   final TempoEspera? tempoEspera;

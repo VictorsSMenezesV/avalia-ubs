@@ -6,7 +6,7 @@ import "providers/auth_controller.dart";
 class PasswordResetScreen extends StatefulWidget {
   static const String routeName = "/password-reset";
 
-  const PasswordResetScreen({Key? key}) : super(key: key);
+  const PasswordResetScreen({super.key});
 
   @override
   State<PasswordResetScreen> createState() => _PasswordResetScreenState();

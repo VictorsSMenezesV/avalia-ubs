@@ -1,6 +1,3 @@
-// Arquivo: lib/screens/insercao_ubs_screen.dart
-// Atualizado para usar UbsService e UbsModel
-
 import "package:flutter/material.dart";
 import "package:meu_app/features/ubs/data/models/ubs_model.dart";
 import "package:meu_app/features/ubs/domain/entites/endereco_entity.dart";
@@ -34,7 +31,7 @@ class _InsercaoUbsScreenState extends State<InsercaoUbsScreen> {
 
   
       final novaUbs = UbsModel(
-        id: "", // O ID será gerado pelo Firestore ao adicionar
+        id: "", 
         nome: _nomeController.text.trim(),
         endereco: EnderecoEntity(
           bairro: 'bairro',

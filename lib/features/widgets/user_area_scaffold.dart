@@ -1,5 +1,3 @@
-// presentation/shared/widgets/user_area_scaffold.dart
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meu_app/features/auth/presentation/providers/auth_controller.dart';
@@ -61,7 +59,7 @@ class _UserDrawer extends StatelessWidget {
               title: const Text("Fazer Cadastro"),
               onTap: () {
                 Navigator.pop(context);
-                context.push('/signup'); // push: é uma tarefa única, volta com back
+                context.push('/signup'); 
               },
             ),
           if (!auth.isVisitor && auth.currentUser != null)
@@ -89,7 +87,7 @@ class _UserDrawer extends StatelessWidget {
             title: const Text("Unidades Próximas de Você"),
             onTap: () {
               Navigator.pop(context);
-              context.go('/favoritos');  
+              context.go('/ubs-proximas');  
             },
           ),
           const Divider(),
@@ -99,7 +97,6 @@ class _UserDrawer extends StatelessWidget {
             onTap: () async {
               Navigator.pop(context);
               await auth.signOut();
-              // redirect cuida de mandar pro /login automaticamente
             },
           ),
         ],
